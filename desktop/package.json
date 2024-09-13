@@ -2,27 +2,43 @@
   "name": "Pilot",
   "version": "0.1.0",
   "main": "main.js",
+  "output_folder": {
+    "mac": "Pilot-darwin-x64",
+    "lin": "Pilot-linux-x64",
+    "win": "Pilot-win32-x64"
+  },
   "scripts": {
-    "start": "electron .",
+    "start": "electron-forge start",
     "time": "node time.js",
     "docs": "node ../docs.js",
     "fix": "standard --fix",
-    "clean": "rm -r ~/Desktop/Pilot-darwin-x64/ ; rm -r ~/Desktop/Pilot-linux-x64/ ; rm -r ~/Desktop/Pilot-win32-x64/ ; echo 'cleaned build location'",
-    "build_osx": "electron-packager . Pilot --platform=darwin --arch=x64 --out ~/Desktop/ --overwrite --icon=icon.icns ; echo 'Built for OSX'",
-    "build_linux": "electron-packager . Pilot --platform=linux  --arch=x64 --out ~/Desktop/ --overwrite --icon=icon.ico ; echo 'Built for LINUX'",
-    "build_win": "electron-packager . Pilot --platform=win32  --arch=x64 --out ~/Desktop/ --overwrite --icon=icon.ico ; echo 'Built for WIN'",
+    "clean": "rm -r ./output/$npm_package_output_folder_mac/ ; rm -r ./output/$npm_package_output_folder_lin/ ; rm -r ./output/$npm_package_output_folder_win/ ; echo 'cleaned build location'",
+    "build_osx": "electron-packager . Pilot --platform=darwin --arch=x64 --out ./output/ --overwrite --icon=icon.icns ; echo 'Built for OSX'",
+    "build_linux": "electron-packager . Pilot --platform=linux  --arch=x64 --out ./output/ --overwrite --icon=icon.ico ; echo 'Built for LINUX'",
+    "build_win": "electron-packager . Pilot --platform=win32  --arch=x64 --out ./output/ --overwrite --icon=icon.ico ; echo 'Built for WIN'",
     "build": "npm run clean ; npm run build_osx ; npm run build_linux ; npm run build_win",
     "push_osx": "~/butler push ~/Desktop/Pilot-darwin-x64/ hundredrabbits/pilot:osx-64",
     "push_linux": "~/butler push ~/Desktop/Pilot-linux-x64/ hundredrabbits/pilot:linux-64",
     "push_win": "~/butler push ~/Desktop/Pilot-win32-x64/ hundredrabbits/pilot:windows-64",
     "push_status": "~/butler status hundredrabbits/pilot",
-    "push": "npm run build ; npm run push_osx ; npm run push_linux ; npm run push_win ; npm run clean ; npm run push_status"
+    "push": "npm run build ; npm run push_osx ; npm run push_linux ; npm run push_win ; npm run clean ; npm run push_status",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
     "electron": "^32.1.0",
     "electron-packager": "^17.1.2"
   },
   "dependencies": {
+    "electron-squirrel-startup": "^1.0.1",
     "tone": "^13.4.9"
   }
 }
