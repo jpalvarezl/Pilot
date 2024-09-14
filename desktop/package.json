@@ -2,11 +2,6 @@
   "name": "Pilot",
   "version": "0.1.0",
   "main": "main.js",
-  "output_folder": {
-    "mac": "Pilot-darwin-x64",
-    "lin": "Pilot-linux-x64",
-    "win": "Pilot-win32-x64"
-  },
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
