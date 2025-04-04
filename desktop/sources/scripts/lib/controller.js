@@ -1,46 +1,55 @@
-export default function Controller () {
-  const fs = require('fs')
-  const { dialog, app } = require('electron').remote
+const { ipcRenderer } = require('electron');
 
-  this.menu = { default: {} }
-  this.mode = 'default'
+export default function Controller() {
+  this.menu = [];
 
-  this.app = require('electron').remote.app
-
-  this.start = function () {
-  }
-
-  this.add = function (mode, cat, label, fn, accelerator) {
-    if (!this.menu[mode]) { this.menu[mode] = {} }
-    if (!this.menu[mode][cat]) { this.menu[mode][cat] = {} }
-    this.menu[mode][cat][label] = { fn: fn, accelerator: accelerator }
-  }
-
-  this.addRole = function (mode, cat, label) {
-    if (!this.menu[mode]) { this.menu[mode] = {} }
-    if (!this.menu[mode][cat]) { this.menu[mode][cat] = {} }
-    this.menu[mode][cat][label] = { role: label }
-  }
-
-  this.format = function () {
-    const f = []
-    const m = this.menu[this.mode]
-    for (const cat in m) {
-      const submenu = []
-      for (const name in m[cat]) {
-        const option = m[cat][name]
-        if (option.role) {
-          submenu.push({ role: option.role })
-        } else {
-          submenu.push({ label: name, accelerator: option.accelerator, click: option.fn })
-        }
-      }
-      f.push({ label: cat, submenu: submenu })
+  this.add = function (category, label, fn, accelerator) {
+    let categoryEntry = this.menu.find((entry) => entry.label === category);
+    if (!categoryEntry) {
+      categoryEntry = { label: category, submenu: [] };
+      this.menu.push(categoryEntry);
     }
-    return f
-  }
+
+    categoryEntry.submenu.push({ label, accelerator, click: fn });
+  };
+
+  this.addRole = function (category, role) {
+    let categoryEntry = this.menu.find((entry) => entry.label === category);
+    if (!categoryEntry) {
+      categoryEntry = { label: category, submenu: [] };
+      this.menu.push(categoryEntry);
+    }
+
+    categoryEntry.submenu.push({ role });
+  };
 
   this.commit = function () {
-    this.app.injectMenu(this.format())
-  }
+    ipcRenderer.invoke('set-application-menu', this.menu);
+  };
+
+  // Define the menu structure
+  this.add("File", "Quit", () => {
+    ipcRenderer.invoke('quit-app');
+  }, "CmdOrCtrl+Q");
+
+  this.add("View", "Toggle Developer Tools", () => {
+    ipcRenderer.invoke('toggle-devtools');
+  }, "CmdOrCtrl+Alt+I");
+
+  this.add("View", "Toggle Fullscreen", () => {
+    ipcRenderer.invoke('toggle-fullscreen');
+  }, "CmdOrCtrl+Enter");
+
+  this.add("View", "Hide Application", () => {
+    ipcRenderer.invoke('toggle-visibility');
+  }, "CmdOrCtrl+H");
+
+  this.addRole("Edit", "undo");
+  this.addRole("Edit", "redo");
+  this.addRole("Edit", "cut");
+  this.addRole("Edit", "copy");
+  this.addRole("Edit", "paste");
+  this.addRole("Edit", "selectall");
+
+  this.commit();
 }

@@ -1,4 +1,4 @@
-const { dialog, app } = require('electron').remote
+const { ipcRenderer } = require('electron')
 const Tone = require('tone')
 const fs = require('fs')
 
@@ -56,8 +56,10 @@ export default function Recorder (pilot) {
   }
 
   this.save = function (blob) {
-    dialog.showSaveDialog({ filters: [{ name: 'Audio File', extensions: ['opus'] }] }, (path) => {
-      if (path === undefined) { return }
+    ipcRenderer.invoke('show-save-dialog', {
+      filters: [{ name: 'Audio File', extensions: ['opus'] }]
+    }).then((path) => {
+      if (!path) { return }
       pilot.recorder.write(path, blob)
     })
   }
@@ -65,10 +67,11 @@ export default function Recorder (pilot) {
   this.write = function (path, blob) {
     const reader = new FileReader()
     reader.onload = function () {
-      const buffer = new Buffer.from(reader.result)
-      fs.writeFile(path, buffer, {}, (err, res) => {
-        if (err) { console.error(err); return }
+      const buffer = Buffer.from(reader.result)
+      ipcRenderer.invoke('write-file', path, buffer).then(() => {
         console.log('Recorder', 'Export complete.')
+      }).catch(err => {
+        console.error(err)
       })
     }
     reader.readAsArrayBuffer(blob)

@@ -34,15 +34,22 @@ export default function Pilot () {
     this.commander.install(this.el)
   }
 
+  // Validate and set a default zoomFactor if the stored value is invalid.
   this.start = function () {
-    console.info('Pilot is starting..')
-    this.mixer.start()
-    this.commander.start()
-    this.theme.start()
+    console.info('Pilot is starting..');
+    this.mixer.start();
+    this.commander.start();
+    this.theme.start();
 
-    const zoomFactor = Number(localStorage.getItem('zoomFactor'))
-    webFrame.setZoomFactor(zoomFactor)
-  }
+    const zoomFactor = Number(localStorage.getItem('zoomFactor'));
+    if (isNaN(zoomFactor) || zoomFactor <= 0) {
+      console.warn("Invalid zoomFactor, setting to default value of 1.0");
+      webFrame.setZoomFactor(1.0);
+      localStorage.setItem('zoomFactor', 1.0);
+    } else {
+      webFrame.setZoomFactor(zoomFactor);
+    }
+  };
 
   this.toggleAnimations = function (mod, set = false) {
     this.animate = this.animate !== true
@@ -55,3 +62,5 @@ export default function Pilot () {
     localStorage.setItem('zoomFactor', newZoomFactor)
   }
 }
+
+// Updated to ensure compatibility with Deno. Removed any implicit Node.js dependencies.

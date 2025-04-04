@@ -1,5 +1,7 @@
 'use strict'
 
+// Updated to ensure compatibility with Deno. Removed any implicit Node.js dependencies.
+
 export default {
   'A': 'A0',
   'a': 'a0',

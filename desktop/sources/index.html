@@ -6,23 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="links/style.css"/>
     <title>Pilot</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' js: blob:; worker-src 'self' blob:; object-src 'none';">
+    <!-- Added a secure Content Security Policy to address Electron's security warning. -->
   </head>
   <body>
     <script type="module">
-      import Pilot from "js:./sources/scripts/pilot.js"
-      import Controller from "js:./sources/scripts/lib/controller.js"
+      import Pilot from "js:./sources/scripts/pilot.js";
+      import Controller from "js:./sources/scripts/lib/controller.js";
 
-      const webFrame = require('electron').webFrame
-      const {dialog,app} = require('electron').remote;
-      const pilot = new Pilot()
-      const controller = new Controller()
+      const { ipcRenderer } = require('electron');
 
-      controller.add("default","*","About",() => { require('electron').shell.openExternal('https://github.com/hundredrabbits/Pilot') },"CmdOrCtrl+,")
-      controller.add("default","*","Fullscreen",() => { app.toggleFullscreen() },"CmdOrCtrl+Enter")
-      controller.add("default","*","Hide",() => { app.toggleVisible() },"CmdOrCtrl+H")
-      controller.add("default","*","Inspect",() => { app.inspect() },"CmdOrCtrl+.")
-      controller.add("default","*","Reset",() => { pilot.mixer.reset() },"CmdOrCtrl+Backspace")
-      controller.add("default","*","Quit",() => { app.exit() },"CmdOrCtrl+Q")
+      const pilot = new Pilot();
+      const controller = new Controller();
+
+      controller.add("default", "*", "About", () => {
+        ipcRenderer.invoke('open-external', 'https://github.com/hundredrabbits/Pilot');
+      }, "CmdOrCtrl+,");
+
+      controller.add("default", "*", "Fullscreen", () => {
+        ipcRenderer.invoke('toggle-fullscreen');
+      }, "CmdOrCtrl+Enter");
+
+      controller.add("default", "*", "Hide", () => {
+        ipcRenderer.invoke('toggle-visibility');
+      }, "CmdOrCtrl+H");
+
+      controller.add("default", "*", "Inspect", () => {
+        ipcRenderer.invoke('toggle-devtools');
+      }, "CmdOrCtrl+.");
+
+      controller.add("default", "*", "Reset", () => {
+        pilot.mixer.reset();
+      }, "CmdOrCtrl+Backspace");
+
+      controller.add("default", "*", "Quit", () => {
+        ipcRenderer.invoke('quit-app');
+      }, "CmdOrCtrl+Q");
 
       controller.add("default","File","Record",() => { pilot.recorder.toggle() },"CmdOrCtrl+R")
       controller.add("default","File","Stop Recording",() => { pilot.recorder.stop() },"Escape")
@@ -44,9 +63,9 @@
       controller.add("default","Theme","Reset Theme",() => { pilot.theme.reset() },"CmdOrCtrl+Shift+Backspace")
       controller.add("default","Theme","Download Themes..",() => { require('electron').shell.openExternal('https://github.com/hundredrabbits/Themes') })
 
-      controller.commit()
+      controller.commit();
 
-      pilot.install(document.body)
+      pilot.install(document.body);
       pilot.start();
     </script>
   </body>

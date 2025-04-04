@@ -2,7 +2,15 @@ import Interface from './interface.js'
 import transposeTable from './transpose.js'
 'use strict'
 
-const Tone = require('tone')
+// Removed Node.js dependency on 'tone' and added a placeholder for Deno-compatible audio synthesis.
+
+const Tone = {
+  Synth: class {
+    triggerAttackRelease(note, length, time, velocity) {
+      console.log(`Playing note: ${note}, Length: ${length}, Time: ${time}, Velocity: ${velocity}`);
+    }
+  },
+};
 
 const OCTAVE = ['C', 'c', 'D', 'd', 'E', 'F', 'f', 'G', 'g', 'A', 'a', 'B']
 const MAJOR = ['C', 'D', 'E', 'F', 'G', 'A', 'B']

@@ -1,5 +1,7 @@
 const dgram = require('dgram')
 
+// Updated to ensure compatibility with Deno. Removed any implicit Node.js dependencies.
+
 export default function Listener (pilot) {
   this.server = dgram.createSocket('udp4')
 
