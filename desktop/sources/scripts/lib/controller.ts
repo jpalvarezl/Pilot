@@ -1,10 +1,10 @@
 const { ipcRenderer } = require('electron');
 
-export default function Controller() {
+export default function Controller(this: any): void {
   this.menu = [];
 
-  this.add = function (category, label, fn, accelerator) {
-    let categoryEntry = this.menu.find((entry) => entry.label === category);
+  this.add = function (this: any, category: string, label: string, fn: () => void, accelerator?: string): void {
+    let categoryEntry = this.menu.find((entry: any) => entry.label === category);
     if (!categoryEntry) {
       categoryEntry = { label: category, submenu: [] };
       this.menu.push(categoryEntry);
@@ -13,8 +13,8 @@ export default function Controller() {
     categoryEntry.submenu.push({ label, accelerator, click: fn });
   };
 
-  this.addRole = function (category, role) {
-    let categoryEntry = this.menu.find((entry) => entry.label === category);
+  this.addRole = function (this: any, category: string, role: string): void {
+    let categoryEntry = this.menu.find((entry: any) => entry.label === category);
     if (!categoryEntry) {
       categoryEntry = { label: category, submenu: [] };
       this.menu.push(categoryEntry);
@@ -23,7 +23,7 @@ export default function Controller() {
     categoryEntry.submenu.push({ role });
   };
 
-  this.commit = function () {
+  this.commit = function (this: any): void {
     ipcRenderer.invoke('set-application-menu', this.menu);
   };
 

@@ -10,12 +10,25 @@ You can download [builds](https://hundredrabbits.itch.io/pilot) for **OSX, Windo
 git clone https://github.com/hundredrabbits/Pilot.git
 cd Pilot/desktop/
 npm install
+npm run build
 npm start
 ```
 
-<img src='https://raw.githubusercontent.com/hundredrabbits/Pilot/master/resources/preview.jpg' width="600"/>
+### Development
 
-## Commands
+This project has been migrated to **TypeScript**. To make changes or contribute:
+
+1. Edit the `.ts` files in the `desktop/sources/scripts` directory.
+2. Run `npm run build` to compile the TypeScript files into JavaScript.
+3. Use `npm start` to launch the application.
+
+### Project Structure
+
+- **browser/**: Contains mock implementations and browser-specific files.
+- **desktop/**: The main Electron application, including TypeScript source files and assets.
+- **resources/**: Images and other static resources.
+
+### Commands
 
 Pilot has 16 voices, and 8 effects. Commands can be entered directly with the input bar, or through UDP via the port `49161`. You can send multiple commands at once by using the `;` character. For example, `03C;13E` will play a `C3` and `E3` chord.
 
@@ -23,7 +36,7 @@ Pilot has 16 voices, and 8 effects. Commands can be entered directly with the in
 
 #### Play
 
-The Play commands allows you to play synth notes.
+The Play commands allow you to play synth notes.
 
 | Command  | Channel | Octave | Note | Velocity | Length |
 | :-       | :-:     | :-:    | :-:  | :-:      | :-:    |
