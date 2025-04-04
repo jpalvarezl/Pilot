@@ -1,5 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Interface;
 const Tone = require('tone');
-export default function Interface(pilot, id, node) {
+function Interface(pilot, id, node) {
     this.node = node;
     this.meter = new Tone.Meter(0.95);
     this.waveform = new Tone.Waveform(256);

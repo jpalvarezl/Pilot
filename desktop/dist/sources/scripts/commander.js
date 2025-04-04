@@ -1,4 +1,6 @@
-export default class Commander {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class Commander {
     constructor(pilot) {
         this.el = document.createElement('div');
         this.el.id = 'commander';
@@ -58,3 +60,4 @@ export default class Commander {
         this.input.focus();
     }
 }
+exports.default = Commander;

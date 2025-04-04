@@ -1,6 +1,11 @@
-import { ipcRenderer } from 'electron';
-import Tone from 'tone';
-export default class Recorder {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const electron_1 = require("electron");
+const tone_1 = __importDefault(require("tone"));
+class Recorder {
     constructor(pilot) {
         this.el = document.createElement('div');
         this.el.id = 'recorder';
@@ -8,7 +13,7 @@ export default class Recorder {
         this.el.textContent = '\u2022';
         this.isRecording = false;
         this.chunks = [];
-        pilot.mixer.hook = Tone.context.createMediaStreamDestination();
+        pilot.mixer.hook = tone_1.default.context.createMediaStreamDestination();
         pilot.mixer.recorder = new MediaRecorder(pilot.mixer.hook.stream);
         pilot.mixer.effects.limiter.connect(pilot.mixer.hook);
         pilot.mixer.recorder.onstop = (evt) => {
@@ -48,7 +53,7 @@ export default class Recorder {
         }
     }
     save(blob, pilot) {
-        ipcRenderer.invoke('show-save-dialog', {
+        electron_1.ipcRenderer.invoke('show-save-dialog', {
             filters: [{ name: 'Audio File', extensions: ['opus'] }],
         }).then((path) => {
             if (!path) {
@@ -61,7 +66,7 @@ export default class Recorder {
         const reader = new FileReader();
         reader.onload = function () {
             const buffer = Buffer.from(reader.result);
-            ipcRenderer.invoke('write-file', path, buffer).then(() => {
+            electron_1.ipcRenderer.invoke('write-file', path, buffer).then(() => {
                 console.log('Recorder', 'Export complete.');
             }).catch((err) => {
                 console.error(err);
@@ -70,3 +75,4 @@ export default class Recorder {
         reader.readAsArrayBuffer(blob);
     }
 }
+exports.default = Recorder;

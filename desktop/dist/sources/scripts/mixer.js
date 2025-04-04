@@ -1,7 +1,12 @@
-import ChannelInterface from './interface.channel';
-import EffectInterface from './interface.effect';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const interface_channel_1 = __importDefault(require("./interface.channel"));
+const interface_effect_1 = __importDefault(require("./interface.effect"));
 const Tone = require('tone');
-export default class Mixer {
+class Mixer {
     constructor(pilot) {
         this.el = document.createElement('div');
         this.el.id = 'mixer';
@@ -12,46 +17,46 @@ export default class Mixer {
         this.initializeEffects(pilot);
     }
     initializeChannels(pilot) {
-        this.channels[0] = new ChannelInterface(pilot, '0', new Tone.AMSynth({ 'harmonicity': 1.25, 'oscillator': { 'type': 'sine8' }, 'modulation': { 'type': 'sine' } }));
-        this.channels[1] = new ChannelInterface(pilot, '1', new Tone.AMSynth({ 'harmonicity': 1.5, 'oscillator': { 'type': 'triangle8' }, 'modulation': { 'type': 'sawtooth' } }));
-        this.channels[2] = new ChannelInterface(pilot, '2', new Tone.AMSynth({ 'harmonicity': 1.75, 'oscillator': { 'type': 'sawtooth8' }, 'modulation': { 'type': 'triangle' } }));
-        this.channels[3] = new ChannelInterface(pilot, '3', new Tone.AMSynth({ 'harmonicity': 2, 'oscillator': { 'type': 'square8' }, 'modulation': { 'type': 'square' } }));
+        this.channels[0] = new interface_channel_1.default(pilot, '0', new Tone.AMSynth({ 'harmonicity': 1.25, 'oscillator': { 'type': 'sine8' }, 'modulation': { 'type': 'sine' } }));
+        this.channels[1] = new interface_channel_1.default(pilot, '1', new Tone.AMSynth({ 'harmonicity': 1.5, 'oscillator': { 'type': 'triangle8' }, 'modulation': { 'type': 'sawtooth' } }));
+        this.channels[2] = new interface_channel_1.default(pilot, '2', new Tone.AMSynth({ 'harmonicity': 1.75, 'oscillator': { 'type': 'sawtooth8' }, 'modulation': { 'type': 'triangle' } }));
+        this.channels[3] = new interface_channel_1.default(pilot, '3', new Tone.AMSynth({ 'harmonicity': 2, 'oscillator': { 'type': 'square8' }, 'modulation': { 'type': 'square' } }));
         // AM
-        this.channels[4] = new ChannelInterface(pilot, '4', new Tone.AMSynth({ 'harmonicity': 1.25, 'oscillator': { 'type': 'sine4' }, 'modulation': { 'type': 'square8' } }));
-        this.channels[5] = new ChannelInterface(pilot, '5', new Tone.AMSynth({ 'harmonicity': 1.5, 'oscillator': { 'type': 'triangle4' }, 'modulation': { 'type': 'sawtooth8' } }));
-        this.channels[6] = new ChannelInterface(pilot, '6', new Tone.FMSynth({ 'harmonicity': 1.75, 'modulationIndex': 10, 'oscillator': { 'type': 'sawtooth4' }, 'modulation': { 'type': 'triangle8' } }));
-        this.channels[7] = new ChannelInterface(pilot, '7', new Tone.FMSynth({ 'harmonicity': 2, 'modulationIndex': 20, 'oscillator': { 'type': 'square4' }, 'modulation': { 'type': 'sine8' } }));
+        this.channels[4] = new interface_channel_1.default(pilot, '4', new Tone.AMSynth({ 'harmonicity': 1.25, 'oscillator': { 'type': 'sine4' }, 'modulation': { 'type': 'square8' } }));
+        this.channels[5] = new interface_channel_1.default(pilot, '5', new Tone.AMSynth({ 'harmonicity': 1.5, 'oscillator': { 'type': 'triangle4' }, 'modulation': { 'type': 'sawtooth8' } }));
+        this.channels[6] = new interface_channel_1.default(pilot, '6', new Tone.FMSynth({ 'harmonicity': 1.75, 'modulationIndex': 10, 'oscillator': { 'type': 'sawtooth4' }, 'modulation': { 'type': 'triangle8' } }));
+        this.channels[7] = new interface_channel_1.default(pilot, '7', new Tone.FMSynth({ 'harmonicity': 2, 'modulationIndex': 20, 'oscillator': { 'type': 'square4' }, 'modulation': { 'type': 'sine8' } }));
         // FM
-        this.channels[8] = new ChannelInterface(pilot, '8', new Tone.FMSynth({ 'harmonicity': 0.5, 'modulationIndex': 30, 'oscillator': { 'type': 'sine' }, 'modulation': { 'type': 'sawtooth4' } }));
-        this.channels[9] = new ChannelInterface(pilot, '9', new Tone.FMSynth({ 'harmonicity': 2.5, 'modulationIndex': 40, 'oscillator': { 'type': 'sine' }, 'modulation': { 'type': 'triangle8' } }));
-        this.channels[10] = new ChannelInterface(pilot, '10', new Tone.MonoSynth({ 'volume': -20, oscillator: { 'type': 'sawtooth4' } }));
-        this.channels[11] = new ChannelInterface(pilot, '11', new Tone.MonoSynth({ 'volume': -20, oscillator: { 'type': 'sine4' } }));
+        this.channels[8] = new interface_channel_1.default(pilot, '8', new Tone.FMSynth({ 'harmonicity': 0.5, 'modulationIndex': 30, 'oscillator': { 'type': 'sine' }, 'modulation': { 'type': 'sawtooth4' } }));
+        this.channels[9] = new interface_channel_1.default(pilot, '9', new Tone.FMSynth({ 'harmonicity': 2.5, 'modulationIndex': 40, 'oscillator': { 'type': 'sine' }, 'modulation': { 'type': 'triangle8' } }));
+        this.channels[10] = new interface_channel_1.default(pilot, '10', new Tone.MonoSynth({ 'volume': -20, oscillator: { 'type': 'sawtooth4' } }));
+        this.channels[11] = new interface_channel_1.default(pilot, '11', new Tone.MonoSynth({ 'volume': -20, oscillator: { 'type': 'sine4' } }));
         // Membrane
-        this.channels[12] = new ChannelInterface(pilot, '12', new Tone.MembraneSynth({ 'octaves': 5, 'oscillator': { 'type': 'sine' } }));
-        this.channels[13] = new ChannelInterface(pilot, '13', new Tone.MembraneSynth({ 'octaves': 10, 'oscillator': { 'type': 'sawtooth' } }));
-        this.channels[14] = new ChannelInterface(pilot, '14', new Tone.MembraneSynth({ 'octaves': 15, 'oscillator': { 'type': 'triangle' } }));
-        this.channels[15] = new ChannelInterface(pilot, '15', new Tone.MembraneSynth({ 'octaves': 20, 'oscillator': { 'type': 'square' } }));
+        this.channels[12] = new interface_channel_1.default(pilot, '12', new Tone.MembraneSynth({ 'octaves': 5, 'oscillator': { 'type': 'sine' } }));
+        this.channels[13] = new interface_channel_1.default(pilot, '13', new Tone.MembraneSynth({ 'octaves': 10, 'oscillator': { 'type': 'sawtooth' } }));
+        this.channels[14] = new interface_channel_1.default(pilot, '14', new Tone.MembraneSynth({ 'octaves': 15, 'oscillator': { 'type': 'triangle' } }));
+        this.channels[15] = new interface_channel_1.default(pilot, '15', new Tone.MembraneSynth({ 'octaves': 20, 'oscillator': { 'type': 'square' } }));
     }
     initializeEffects(pilot) {
-        this.effects.bitcrusher = new EffectInterface(pilot, 'bit', new Tone.BitCrusher(4));
-        this.effects.distortion = new EffectInterface(pilot, 'dis', new Tone.Distortion(0.05));
-        this.effects.autowah = new EffectInterface(pilot, 'wah', new Tone.AutoWah(100, 6, 0));
-        this.effects.chebyshev = new EffectInterface(pilot, 'che', new Tone.Chebyshev(50));
+        this.effects.bitcrusher = new interface_effect_1.default(pilot, 'bit', new Tone.BitCrusher(4));
+        this.effects.distortion = new interface_effect_1.default(pilot, 'dis', new Tone.Distortion(0.05));
+        this.effects.autowah = new interface_effect_1.default(pilot, 'wah', new Tone.AutoWah(100, 6, 0));
+        this.effects.chebyshev = new interface_effect_1.default(pilot, 'che', new Tone.Chebyshev(50));
         // II
-        this.effects.feedback = new EffectInterface(pilot, 'fee', new Tone.FeedbackDelay(0));
-        this.effects.delay = new EffectInterface(pilot, 'del', new Tone.PingPongDelay('4n', 0.2));
-        this.effects.tremolo = new EffectInterface(pilot, 'tre', new Tone.Tremolo());
-        this.effects.reverb = new EffectInterface(pilot, 'rev', new Tone.JCReverb(0));
+        this.effects.feedback = new interface_effect_1.default(pilot, 'fee', new Tone.FeedbackDelay(0));
+        this.effects.delay = new interface_effect_1.default(pilot, 'del', new Tone.PingPongDelay('4n', 0.2));
+        this.effects.tremolo = new interface_effect_1.default(pilot, 'tre', new Tone.Tremolo());
+        this.effects.reverb = new interface_effect_1.default(pilot, 'rev', new Tone.JCReverb(0));
         // III
-        this.effects.phaser = new EffectInterface(pilot, 'pha', new Tone.Phaser(0.5, 3, 350));
-        this.effects.vibrato = new EffectInterface(pilot, 'vib', new Tone.Vibrato());
-        this.effects.chorus = new EffectInterface(pilot, 'cho', new Tone.Chorus(4, 2.5, 0.5));
-        this.effects.widener = new EffectInterface(pilot, 'ste', new Tone.StereoWidener(0.5, 3, 350));
+        this.effects.phaser = new interface_effect_1.default(pilot, 'pha', new Tone.Phaser(0.5, 3, 350));
+        this.effects.vibrato = new interface_effect_1.default(pilot, 'vib', new Tone.Vibrato());
+        this.effects.chorus = new interface_effect_1.default(pilot, 'cho', new Tone.Chorus(4, 2.5, 0.5));
+        this.effects.widener = new interface_effect_1.default(pilot, 'ste', new Tone.StereoWidener(0.5, 3, 350));
         // Mastering
-        this.effects.equalizer = new EffectInterface(pilot, 'equ', new Tone.EQ3(5, 0, 5));
-        this.effects.compressor = new EffectInterface(pilot, 'com', new Tone.Compressor(-6, 4));
-        this.effects.volume = new EffectInterface(pilot, 'vol', new Tone.Volume(6));
-        this.effects.limiter = new EffectInterface(pilot, 'lim', new Tone.Limiter(-2));
+        this.effects.equalizer = new interface_effect_1.default(pilot, 'equ', new Tone.EQ3(5, 0, 5));
+        this.effects.compressor = new interface_effect_1.default(pilot, 'com', new Tone.Compressor(-6, 4));
+        this.effects.volume = new interface_effect_1.default(pilot, 'vol', new Tone.Volume(6));
+        this.effects.limiter = new interface_effect_1.default(pilot, 'lim', new Tone.Limiter(-2));
     }
     install(host) {
         console.log('Mixer', 'Installing..');
@@ -155,4 +160,5 @@ export default class Mixer {
         this.run('BIT07;DIS00;WAH0F;CHE07;FEE00;TRE07;REV00;PHA0F;VIB01;CHO07');
     }
 }
+exports.default = Mixer;
 function clamp(v, min, max) { return v < min ? min : v > max ? max : v; }

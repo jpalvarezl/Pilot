@@ -1,8 +1,13 @@
-import Interface from './interface';
-export default class EffectInterface {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const interface_1 = __importDefault(require("./interface"));
+class EffectInterface {
     constructor(pilot, id, node) {
         this.lastEffect = null;
-        Interface.call(this, pilot, id, node);
+        interface_1.default.call(this, pilot, id, node);
         this.node = node;
         if (this.node.wet) {
             this.node.wet.value = 0;
@@ -160,3 +165,4 @@ export default class EffectInterface {
         // Implement start logic here
     }
 }
+exports.default = EffectInterface;

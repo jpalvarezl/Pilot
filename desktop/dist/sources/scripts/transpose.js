@@ -1,6 +1,7 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
 // Updated to ensure compatibility with Deno. Removed any implicit Node.js dependencies.
-export default {
+exports.default = {
     'A': 'A0',
     'a': 'a0',
     'B': 'B0',

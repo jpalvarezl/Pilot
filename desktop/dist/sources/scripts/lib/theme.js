@@ -1,5 +1,8 @@
-import { ipcRenderer } from 'electron';
-export default function Theme(_default) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Theme;
+const electron_1 = require("electron");
+function Theme(_default) {
     const themer = this;
     this.active = _default;
     this.el = document.createElement('style');
@@ -82,7 +85,7 @@ export default function Theme(_default) {
         reader.readAsText(file);
     };
     this.open = function () {
-        ipcRenderer.invoke('show-open-dialog', {
+        electron_1.ipcRenderer.invoke('show-open-dialog', {
             properties: ['openFile'],
             filters: [{ name: 'Themes', extensions: ['svg'] }],
         }).then((result) => {

@@ -1,4 +1,9 @@
-import Interface from './interface';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const interface_1 = __importDefault(require("./interface"));
 'use strict';
 const Tone = {
     Synth: class {
@@ -10,9 +15,9 @@ const Tone = {
 const OCTAVE = ['C', 'c', 'D', 'd', 'E', 'F', 'f', 'G', 'g', 'A', 'a', 'B'];
 const WAVCODES = ['si', 'tr', 'sq', 'sw', '2i', '2r', '2q', '2w', '4i', '4r', '4q', '4w', '8i', '8r', '8q', '8w'];
 const WAVNAMES = ['sine', 'triangle', 'square', 'sawtooth', 'sine2', 'triangle2', 'square2', 'sawtooth2', 'sine4', 'triangle4', 'square4', 'sawtooth4', 'sine8', 'triangle8', 'square8', 'sawtooth8'];
-export default class ChannelInterface {
+class ChannelInterface {
     constructor(pilot, id, node) {
-        Interface.call(this, pilot, id, node);
+        interface_1.default.call(this, pilot, id, node);
         this.node = node;
         this.el = document.createElement('div');
         this.el.id = `ch${id}`;
@@ -122,3 +127,4 @@ export default class ChannelInterface {
         // Implement random oscillator logic here
     }
 }
+exports.default = ChannelInterface;

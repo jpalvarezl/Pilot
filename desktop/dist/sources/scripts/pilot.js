@@ -1,15 +1,21 @@
-import Listener from './listener';
-import Mixer from './mixer';
-import Recorder from './recorder';
-import Commander from './commander';
-import Theme from './lib/theme';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Pilot;
+const listener_1 = __importDefault(require("./listener"));
+const mixer_1 = __importDefault(require("./mixer"));
+const recorder_1 = __importDefault(require("./recorder"));
+const commander_1 = __importDefault(require("./commander"));
+const theme_1 = __importDefault(require("./lib/theme"));
 const { webFrame } = require('electron');
-export default function Pilot() {
+function Pilot() {
     this.listener = null;
     this.mixer = null;
     this.recorder = null;
     this.commander = null;
-    this.theme = Theme({
+    this.theme = (0, theme_1.default)({
         background: '#000000',
         f_high: '#ffffff',
         f_med: '#777777',
@@ -25,10 +31,10 @@ export default function Pilot() {
     this.animate = true;
     this.install = function (host) {
         console.info('Pilot is installing..');
-        this.mixer = new Mixer(this);
-        this.listener = new Listener(this);
-        this.recorder = new Recorder(this);
-        this.commander = new Commander(this);
+        this.mixer = new mixer_1.default(this);
+        this.listener = new listener_1.default(this);
+        this.recorder = new recorder_1.default(this);
+        this.commander = new commander_1.default(this);
         host.appendChild(this.el);
         this.theme.install();
         this.mixer.install(this.el);

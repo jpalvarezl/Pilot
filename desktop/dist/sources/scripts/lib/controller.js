@@ -1,5 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Controller;
 const { ipcRenderer } = require('electron');
-export default function Controller() {
+function Controller() {
     this.menu = [];
     this.add = function (category, label, fn, accelerator) {
         let categoryEntry = this.menu.find((entry) => entry.label === category);

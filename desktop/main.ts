@@ -2,19 +2,20 @@ import { app, BrowserWindow, Menu, dialog, ipcMain, ProtocolRequest, ProtocolRes
 import path from 'path';
 import fs from 'fs';
 
-// Extend the existing Electron.App type to include custom properties and methods
-declare module 'electron' {
-  interface App {
-    win?: BrowserWindow;
-    inspect?: () => void;
-    toggleFullscreen?: () => void;
-    toggleVisible?: () => void;
-    injectMenu?: (menu: Electron.MenuItemConstructorOptions[]) => void;
-  }
+// Define our custom app interface to avoid conflicts with electron.d.ts
+interface ExtendedApp {
+  win?: BrowserWindow;
+  inspect: () => void;
+  toggleFullscreen: () => void;
+  toggleVisible: () => void;
+  injectMenu: (menu: Electron.MenuItemConstructorOptions[]) => void;
 }
 
+// Cast the app to include our extensions
+const extendedApp = app as unknown as typeof app & ExtendedApp;
+
 function createWindow(): void {
-  app.win = new BrowserWindow({
+  extendedApp.win = new BrowserWindow({
     width: 445,
     height: 210,
     minWidth: 200,
@@ -33,18 +34,39 @@ function createWindow(): void {
     },
   });
 
-  app.win.loadURL(`file://${__dirname}/sources/index.html`);
+  // Get the correct path to the HTML file, handling both development and production environments
+  const htmlPath = path.join(__dirname, '..', 'sources', 'index.html');
+  
+  // Log the path for debugging
+  console.log(`Attempting to load HTML from: ${htmlPath}`);
+  
+  // Check if the file exists
+  if (fs.existsSync(htmlPath)) {
+    console.log('HTML file found, loading...');
+    extendedApp.win.loadURL(`file://${htmlPath}`);
+  } else {
+    console.log('HTML file not found, trying alternative path...');
+    // Try an alternative path - this handles the case where we're running from the dist directory
+    const altPath = path.join(__dirname, 'sources', 'index.html');
+    if (fs.existsSync(altPath)) {
+      console.log(`Loading from alternative path: ${altPath}`);
+      extendedApp.win.loadURL(`file://${altPath}`);
+    } else {
+      console.error('Could not find HTML file in any expected location');
+      dialog.showErrorBox('Error', 'Could not find the main HTML file');
+    }
+  }
 
-  app.win.on('closed', () => {
-    app.win = undefined;
+  extendedApp.win.on('closed', () => {
+    extendedApp.win = undefined;
     app.quit();
   });
 
-  app.win.on('hide', () => {
+  extendedApp.win.on('hide', () => {
     isShown = false;
   });
 
-  app.win.on('show', () => {
+  extendedApp.win.on('show', () => {
     isShown = true;
   });
 }
@@ -80,31 +102,31 @@ ipcMain.handle('set-application-menu', (_event, menuTemplate: Electron.MenuItemC
   }
 });
 
-app.inspect = function (): void {
-  app.win?.webContents.toggleDevTools();
+extendedApp.inspect = function (): void {
+  extendedApp.win?.webContents.toggleDevTools();
 };
 
-app.toggleFullscreen = function (): void {
-  app.win?.setFullScreen(!app.win?.isFullScreen());
+extendedApp.toggleFullscreen = function (): void {
+  extendedApp.win?.setFullScreen(!extendedApp.win?.isFullScreen());
 };
 
-app.toggleVisible = function (): void {
+extendedApp.toggleVisible = function (): void {
   if (process.platform === 'darwin') {
-    if (isShown && !app.win?.isFullScreen()) {
-      app.win?.hide();
+    if (isShown && !extendedApp.win?.isFullScreen()) {
+      extendedApp.win?.hide();
     } else {
-      app.win?.show();
+      extendedApp.win?.show();
     }
   } else {
-    if (!app.win?.isMinimized()) {
-      app.win?.minimize();
+    if (!extendedApp.win?.isMinimized()) {
+      extendedApp.win?.minimize();
     } else {
-      app.win?.restore();
+      extendedApp.win?.restore();
     }
   }
 };
 
-app.injectMenu = function (menu: Electron.MenuItemConstructorOptions[]): void {
+extendedApp.injectMenu = function (menu: Electron.MenuItemConstructorOptions[]): void {
   try {
     Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
   } catch (err) {

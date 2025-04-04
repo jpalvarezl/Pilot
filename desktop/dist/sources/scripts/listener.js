@@ -1,7 +1,12 @@
-import dgram from 'dgram';
-export default class Listener {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const dgram_1 = __importDefault(require("dgram"));
+class Listener {
     constructor(pilot) {
-        this.server = dgram.createSocket('udp4');
+        this.server = dgram_1.default.createSocket('udp4');
         this.server.on('message', (msg, rinfo) => {
             pilot.mixer.run(`${msg}`);
         });
@@ -16,3 +21,4 @@ export default class Listener {
         this.server.bind(49161); // TODO - make this configurable
     }
 }
+exports.default = Listener;
