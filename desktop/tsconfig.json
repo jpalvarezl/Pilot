@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "CommonJS",
+    "module": "ESNext", // Ensure ES module syntax
     "moduleResolution": "Node",
     "strict": true,
     "esModuleInterop": true,

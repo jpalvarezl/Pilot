@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, dialog, ipcMain, ProtocolRequest, ProtocolResponse } from 'electron';
+import { app, BrowserWindow, Menu, dialog, ipcMain } from 'electron';
 import path from 'path';
 import fs from 'fs';
 
@@ -73,22 +73,7 @@ function createWindow(): void {
 
 let isShown = true;
 
-require('electron').protocol.registerSchemesAsPrivileged([
-  { scheme: 'js', privileges: { standard: true, secure: true } },
-]);
-
-function protocolHandler(request: ProtocolRequest, respond: (response: ProtocolResponse) => void): void {
-  try {
-    const pathname = request.url.replace(/^js:\/*/, '');
-    const filename = path.resolve(app.getAppPath(), pathname);
-    respond({ mimeType: 'text/javascript', data: fs.readFileSync(filename) });
-  } catch (e) {
-    console.error(e, request);
-  }
-}
-
 app.on('ready', () => {
-  require('electron').protocol.registerBufferProtocol('js', protocolHandler);
   createWindow();
 });
 

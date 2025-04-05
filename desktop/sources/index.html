@@ -11,8 +11,11 @@
   </head>
   <body>
     <script type="module">
+      // Adjust imports to handle CommonJS-style exports
       import Pilot from "./scripts/pilot.js";
-      import Controller from "./scripts/lib/controller.js";
+      import * as ControllerModule from "./scripts/lib/controller.js";
+
+      const Controller = ControllerModule.default;
 
       const { ipcRenderer } = require('electron');
 

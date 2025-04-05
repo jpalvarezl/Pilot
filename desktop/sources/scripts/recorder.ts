@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 import Tone from 'tone';
-import fs from 'fs';
+import * as fs from 'fs';
 
 export default class Recorder {
   el: HTMLElement;

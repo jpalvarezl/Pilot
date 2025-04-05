@@ -1,4 +1,4 @@
-import dgram from 'dgram';
+import * as dgram from 'dgram';
 
 export default class Listener {
   private server: dgram.Socket;
